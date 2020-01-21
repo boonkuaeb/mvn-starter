@@ -1,0 +1,21 @@
+server.port: 8888
+
+# WARNING: Exposing all management endpoints over http should only be used during development, must be locked down in production!
+management.endpoint.health.show-details: "ALWAYS"
+management.endpoints.web.exposure.include: "*"
+
+logging:
+  level:
+    root: info
+spring:
+  profiles:
+    active: native
+  cloud:
+    config:
+      server:
+        native:
+          search-locations: file:${PWD}/config-repo
+---
+spring.profiles: docker
+spring.cloud.config.server.native.searchLocations: file:/config-repo
+

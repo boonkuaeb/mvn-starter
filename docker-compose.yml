@@ -1,32 +1,95 @@
 version: '2.1'
 
 services:
-  product:
-    build: microservices/product-service
-    image: microservices/product-service:1.0.0.2
-    mem_limit: 350m
-    environment:
-      - SPRING_PROFILES_ACTIVE=docker
 
-  recommendation:
-    build: microservices/recommendation-service
-    image: microservices/recommendation-service:1.0.0.2
+  kafka:
+    image: wurstmeister/kafka:2.12-2.1.0
     mem_limit: 350m
-    environment:
-      - SPRING_PROFILES_ACTIVE=docker
-
-  review:
-    build: microservices/review-service
-    image: microservices/review-service:1.0.0.2
-    mem_limit: 350m
-    environment:
-      - SPRING_PROFILES_ACTIVE=docker
-
-  product-composite:
-    build: microservices/composite-service
-    image: microservices/composite-service:1.0.0.2
-    mem_limit: 350m
+    networks:
+      - my-network
     ports:
-      - "8080:8080"
+      - "9092:9092"
     environment:
-      - SPRING_PROFILES_ACTIVE=docker
+      - KAFKA_ADVERTISED_HOST_NAME=kafka
+      - KAFKA_ADVERTISED_PORT=9092
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+    depends_on:
+      - zookeeper
+
+  zookeeper:
+    image: wurstmeister/zookeeper:3.4.6
+    mem_limit: 350m
+    networks:
+      - my-network
+    ports:
+      - "2181:2181"
+    environment:
+      - KAFKA_ADVERTISED_HOST_NAME=zookeeper
+      
+  # $ mongo
+  mongodb:
+    image: mongo:3.6.9
+    mem_limit: 350m
+    networks:
+      - my-network
+    ports:
+      - "27017:27017"
+    command: mongod --smallfiles
+    healthcheck:
+      test: "mongo --eval 'db.stats().ok'"
+      interval: 20s
+      timeout: 5s
+      retries: 10
+
+  # $ mysql -uroot -h127.0.0.1 -p
+  mysql:
+    image: mysql:5.7
+    mem_limit: 350m
+    networks:
+      - my-network
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=rootpwd
+      - MYSQL_DATABASE=review-db
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=pwd
+    healthcheck:
+      test: "/usr/bin/mysql --user=user --password=pwd --execute \"SHOW DATABASES;\""
+      interval: 20s
+      timeout: 5s
+      retries: 10
+
+  rabbitmq:
+    image: rabbitmq:3.7.8-management
+    mem_limit: 1024m
+    networks:
+      - my-network
+    ports:
+      - 5672:5672
+      - 15672:15672
+    healthcheck:
+      test: ["CMD", "rabbitmqctl", "status"]
+      interval: 20s
+      timeout: 5s
+      retries: 10
+
+  zipkin:
+    image: openzipkin/zipkin:2.12.9
+    mem_limit: 512m
+    networks:
+      - my-network
+    environment:
+      - STORAGE_TYPE=mem
+#      - RABBIT_ADDRESSES=rabbitmq
+      - RABBIT_ADDRESSES=rabbitmq
+      
+    ports:
+      - 9411:9411
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+
+networks:
+  my-network:
+    name: my-network
