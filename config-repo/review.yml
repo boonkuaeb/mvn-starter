@@ -33,7 +33,7 @@ spring.cloud.stream.kafka.bindings.input.consumer:
 logging:
   level:
     root: INFO
-    se.magnus: DEBUG
+    com.bk: DEBUG
     org.hibernate.SQL: DEBUG
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
 
@@ -61,11 +61,11 @@ spring.cloud.stream.bindings.input.consumer.instanceIndex: 1
 ---
 spring.profiles: prod
 
-spring.datasource.url: jdbc:mysql://172.17.0.1:3306/review-db
+spring.datasource.url: jdbc:mysql://127.0.0.1:3306/review-db
 
 logging:
   level:
     root: WARN
-    se.magnus: WARN
+    com.bk: WARN
     org.hibernate.SQL: WARN
     org.hibernate.type.descriptor.sql.BasicBinder: WARN

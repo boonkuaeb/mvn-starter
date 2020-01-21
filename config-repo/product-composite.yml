@@ -77,7 +77,7 @@ resilience4j.retry:
       maxRetryAttempts: 3
       waitDuration: 1000
       retryExceptions:
-      - org.springframework.web.reactive.function.client.WebClientResponseException$InternalServerError
+        - org.springframework.web.reactive.function.client.WebClientResponseException$InternalServerError
 
 resilience4j.circuitbreaker:
   backends:
@@ -89,13 +89,13 @@ resilience4j.circuitbreaker:
       ringBufferSizeInHalfOpenState: 3
       automaticTransitionFromOpenToHalfOpenEnabled: true
       ignoreExceptions:
-        - se.magnus.util.exceptions.InvalidInputException
-        - se.magnus.util.exceptions.NotFoundException
+        - com.bk.util.exceptions.InvalidInputException
+        - com.bk.util.exceptions.NotFoundException
 
 logging:
   level:
     root: INFO
-    se.magnus: DEBUG
+    com.bk: DEBUG
     org.springframework.web.server.adapter.HttpWebHandlerAdapter: TRACE
 
 ---
@@ -124,5 +124,5 @@ spring.profiles: prod
 logging:
   level:
     root: WARN
-    se.magnus: WARN
+    com.bk: WARN
     org.springframework.web.server.adapter.HttpWebHandlerAdapter: WARN
