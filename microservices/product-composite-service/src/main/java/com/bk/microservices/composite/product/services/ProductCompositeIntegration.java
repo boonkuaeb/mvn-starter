@@ -42,9 +42,9 @@ public class ProductCompositeIntegration implements ProductService, Recommendati
 
     private static final Logger LOG = LoggerFactory.getLogger(ProductCompositeIntegration.class);
 
-    private final String productServiceUrl = "http://product";
-    private final String recommendationServiceUrl = "http://recommendation";
-    private final String reviewServiceUrl = "http://review";
+    private final String productServiceUrl = "http://localhost:7001";
+    private final String recommendationServiceUrl = "http://localhost:7002";
+    private final String reviewServiceUrl = "http://localhost:7003";
 
     private final ObjectMapper mapper;
     private final WebClient.Builder webClientBuilder;

@@ -6,7 +6,7 @@ spring.data.mongodb:
   database: recommendation-db
 
 spring.cloud.stream:
-  defaultBinder: rabbit
+  defaultBinder: kafka
   default.contentType: application/json
   bindings.input:
     destination: recommendations

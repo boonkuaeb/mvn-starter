@@ -36,11 +36,11 @@ public class HealthCheckConfiguration {
 
         ReactiveHealthIndicatorRegistry registry = new DefaultReactiveHealthIndicatorRegistry(new LinkedHashMap<>());
 
-        registry.register("auth-server",       () -> getHealth("http://auth-server"));
-        registry.register("product",           () -> getHealth("http://product"));
-        registry.register("recommendation",    () -> getHealth("http://recommendation"));
-        registry.register("review",            () -> getHealth("http://review"));
-        registry.register("product-composite", () -> getHealth("http://product-composite"));
+        registry.register("auth-server",       () -> getHealth("http://localhost:9999"));
+        registry.register("product",           () -> getHealth("http://localhost:7001"));
+        registry.register("recommendation",    () -> getHealth("http://localhost:7002"));
+        registry.register("review",            () -> getHealth("http://localhost:7003"));
+        registry.register("product-composite", () -> getHealth("http://localhost:7000"));
 
         return new CompositeReactiveHealthIndicator(healthAggregator, registry);
    	}

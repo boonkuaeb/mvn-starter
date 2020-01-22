@@ -6,7 +6,7 @@ spring.data.mongodb:
   database: product-db
 
 spring.cloud.stream:
-  defaultBinder: rabbit
+  defaultBinder: kafka
   default.contentType: application/json
   bindings.input:
     destination: products
