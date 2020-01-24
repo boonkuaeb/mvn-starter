@@ -1,10 +1,10 @@
 package com.bk.microservices.core.recommendation;
 
+import com.bk.microservices.core.recommendation.persistence.RecommendationEntity;
+import com.bk.microservices.core.recommendation.services.RecommendationMapper;
 import org.junit.Test;
 import org.mapstruct.factory.Mappers;
 import com.bk.api.core.recommendation.Recommendation;
-import com.bk.microservices.core.recommendation.persistence.RecommendationEntity;
-import com.bk.microservices.core.recommendation.services.RecommendationMapper;
 
 import java.util.Collections;
 import java.util.List;

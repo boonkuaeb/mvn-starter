@@ -44,8 +44,8 @@ spring.security.oauth2.resourceserver.jwt.jwk-set-uri: http://${app.auth-server}
 
 logging:
   level:
-    root: DEBUG
-    org.springframework.cloud.gateway.route.RouteDefinitionRouteLocator: DEBUG
+    root: INFO
+    org.springframework.cloud.gateway.route.RouteDefinitionRouteLocator: INFO
     org.springframework.cloud.gateway: TRACE
     org.springframework.web.server.adapter.HttpWebHandlerAdapter: TRACE
 

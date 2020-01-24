@@ -1,33 +1,59 @@
 version: '2.1'
 
 services:
-
-  kafka:
-    image: wurstmeister/kafka:2.12-2.1.0
-    mem_limit: 350m
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.5.2
+    container_name: elasticsearch
     networks:
       - my-network
     ports:
-      - "9092:9092"
+      - 9200:9200
+      - 9300:9300
     environment:
-      - KAFKA_ADVERTISED_HOST_NAME=kafka
-      - KAFKA_ADVERTISED_PORT=9092
-      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+      - discovery.type=single-node
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.5.2
+    container_name: kibana
+    networks:
+      - my-network
+    ports:
+      - 5601:5601
+    environment:
+      ELASTICSEARCH_HOSTS: http://elasticsearch:9200
     depends_on:
-      - zookeeper
+      - elasticsearch
 
-  zookeeper:
-    image: wurstmeister/zookeeper:3.4.6
-    mem_limit: 350m
+  kafka-zookeeper:
+    image: openzipkin/zipkin-kafka
+    container_name: kafka-zookeeper
+    environment:
+      - KAFKA_ADVERTISED_HOST_NAME=192.168.0.102
     networks:
       - my-network
     ports:
-      - "2181:2181"
+      - 2181:2181
+      - 9092:9092
+      - 19092:19092
+
+  zipkin:
+    image: openzipkin/zipkin
+    container_name: zipkin
+    networks:
+      - my-network
     environment:
-      - KAFKA_ADVERTISED_HOST_NAME=zookeeper
-      
+      - STORAGE_TYPE=elasticsearch
+      - ES_HOSTS=elasticsearch:9200
+      - KAFKA_BOOTSTRAP_SERVERS=kafka-zookeeper:9092
+    ports:
+      - 9411:9411
+    depends_on:
+      - elasticsearch
+      - kafka-zookeeper
+
   # $ mongo
   mongodb:
+    container_name: mongodb
     image: mongo:3.6.9
     mem_limit: 350m
     networks:
@@ -44,6 +70,7 @@ services:
   # $ mysql -uroot -h127.0.0.1 -p
   mysql:
     image: mysql:5.7
+    container_name: mysql
     mem_limit: 350m
     networks:
       - my-network
@@ -60,35 +87,6 @@ services:
       timeout: 5s
       retries: 10
 
-  rabbitmq:
-    image: rabbitmq:3.7.8-management
-    mem_limit: 1024m
-    networks:
-      - my-network
-    ports:
-      - 5672:5672
-      - 15672:15672
-    healthcheck:
-      test: ["CMD", "rabbitmqctl", "status"]
-      interval: 20s
-      timeout: 5s
-      retries: 10
-
-  zipkin:
-    image: openzipkin/zipkin:2.12.9
-    mem_limit: 512m
-    networks:
-      - my-network
-    environment:
-      - STORAGE_TYPE=mem
-#      - RABBIT_ADDRESSES=rabbitmq
-      - RABBIT_ADDRESSES=rabbitmq
-      
-    ports:
-      - 9411:9411
-    depends_on:
-      rabbitmq:
-        condition: service_healthy
 
 networks:
   my-network:

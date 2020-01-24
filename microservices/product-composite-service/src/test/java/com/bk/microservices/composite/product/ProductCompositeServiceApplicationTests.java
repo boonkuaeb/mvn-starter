@@ -14,6 +14,7 @@ import reactor.core.publisher.Mono;
 import com.bk.api.core.product.Product;
 import com.bk.api.core.recommendation.Recommendation;
 import com.bk.api.core.review.Review;
+import com.bk.microservices.composite.product.ProductCompositeServiceApplication;
 import com.bk.microservices.composite.product.services.ProductCompositeIntegration;
 import com.bk.util.exceptions.InvalidInputException;
 import com.bk.util.exceptions.NotFoundException;

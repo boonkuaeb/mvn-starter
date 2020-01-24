@@ -11,7 +11,6 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static com.bk.api.event.Event.Type.CREATE;
 import static com.bk.api.event.Event.Type.DELETE;
-import static com.bk.microservices.composite.product.IsSameEvent.sameEventExceptCreatedAt;
 
 public class IsSameEventTests {
 
@@ -29,8 +28,8 @@ public class IsSameEventTests {
 
 		String event1JSon = mapper.writeValueAsString(event1);
 
-		assertThat(event1JSon, is(sameEventExceptCreatedAt(event2)));
-		assertThat(event1JSon, not(sameEventExceptCreatedAt(event3)));
-		assertThat(event1JSon, not(sameEventExceptCreatedAt(event4)));
+		assertThat(event1JSon, is(IsSameEvent.sameEventExceptCreatedAt(event2)));
+		assertThat(event1JSon, not(IsSameEvent.sameEventExceptCreatedAt(event3)));
+		assertThat(event1JSon, not(IsSameEvent.sameEventExceptCreatedAt(event4)));
     }
 }

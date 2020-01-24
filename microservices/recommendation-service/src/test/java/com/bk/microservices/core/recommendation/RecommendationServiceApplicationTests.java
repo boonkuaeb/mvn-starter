@@ -1,5 +1,6 @@
 package com.bk.microservices.core.recommendation;
 
+import com.bk.microservices.core.recommendation.persistence.RecommendationRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,7 +16,6 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 import com.bk.api.core.product.Product;
 import com.bk.api.core.recommendation.Recommendation;
 import com.bk.api.event.Event;
-import com.bk.microservices.core.recommendation.persistence.RecommendationRepository;
 import com.bk.util.exceptions.InvalidInputException;
 
 import static org.junit.Assert.assertEquals;

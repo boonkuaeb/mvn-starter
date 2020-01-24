@@ -1,4 +1,4 @@
-package com.bk.microservices.core.product;
+package java.com.bk.microservices.core.product;
 
 import org.junit.Before;
 import org.junit.Test;

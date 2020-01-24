@@ -1,10 +1,11 @@
 package com.bk.microservices.core.product.services;
 
+import com.bk.microservices.core.product.persistence.ProductEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 import com.bk.api.core.product.Product;
-import com.bk.microservices.core.product.persistence.ProductEntity;
+import org.springframework.stereotype.Component;
 
 @Mapper(componentModel = "spring")
 public interface ProductMapper {
