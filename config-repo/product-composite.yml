@@ -51,7 +51,7 @@ api:
 server.port: 7000
 
 spring.cloud.stream:
-  defaultBinder: rabbit
+  defaultBinder: kafka
   default.contentType: application/json
   bindings:
     output-products:
@@ -67,7 +67,7 @@ spring.cloud.stream:
       producer:
         required-groups: auditGroup
 
-spring.security.oauth2.resourceserver.jwt.jwk-set-uri: http://${app.auth-server}/.well-known/jwks.json
+spring.security.oauth2.resourceserver.jwt.jwk-set-uri: http://${app.auth-server}:9999/.well-known/jwks.json
 
 app.product-service.timeoutSec: 2
 
@@ -89,13 +89,13 @@ resilience4j.circuitbreaker:
       ringBufferSizeInHalfOpenState: 3
       automaticTransitionFromOpenToHalfOpenEnabled: true
       ignoreExceptions:
-        - se.magnus.util.exceptions.InvalidInputException
-        - se.magnus.util.exceptions.NotFoundException
+        - com.bk.util.exceptions.InvalidInputException
+        - com.bk.util.exceptions.NotFoundException
 
 logging:
   level:
     root: INFO
-    se.magnus: DEBUG
+    com.bk: DEBUG
     org.springframework.web.server.adapter.HttpWebHandlerAdapter: TRACE
 
 ---
@@ -124,5 +124,5 @@ spring.profiles: prod
 logging:
   level:
     root: WARN
-    se.magnus: WARN
+    com.bk: WARN
     org.springframework.web.server.adapter.HttpWebHandlerAdapter: WARN
